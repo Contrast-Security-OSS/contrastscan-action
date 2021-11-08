@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.contrastsecurity.scan</groupId>
+    <version>${revision}-${changelist}</version>
+    <artifactId>contrastscan-action</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>contrastscan-remote</module>
+    </modules>
+
+    <properties>
+        <revision>1.0.0</revision>
+        <changelist>SNAPSHOT</changelist>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <versions.jackson>2.11.3</versions.jackson>
+        <versions.maven-shade-plugin>3.2.4</versions.maven-shade-plugin>
+        <versions.picocli>4.5.2</versions.picocli>
+        <versions.prescan-datamodel>0.0.1-SNAPSHOT</versions.prescan-datamodel>
+        <versions.kotest>4.6.3</versions.kotest>
+        <kotlin.version>1.5.31</kotlin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jvmTarget>11</jvmTarget>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <scm>
+        <connection>scm:git:https://github.com/Contrast-Security-OSS/contrastscan-action.git</connection>
+        <tag>HEAD</tag>
+        <url>https://github.com/Contrast-Security-OSS/contrastscan-action</url>
+    </scm>
+
+</project>
