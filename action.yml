@@ -1,0 +1,18 @@
+name: 'Contrast Scan Analyze'
+description: 'Perform SAST analysis of a project'
+inputs:
+  artifact:
+    description: 'artifact to scan'
+    required: true
+  api_url:
+    description: The api url of the Contrast Platform.
+    required: false
+    default: "https://teamserver-harmony-dev.contsec.com/Contrast"
+  sarif:
+    description: The path in which to save the SARIF results.
+    required: false
+    default: "contrastscan.results.sarif"
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
