@@ -2,17 +2,18 @@
 
 This github action will enable you to use Contrast Scan to detect vulnerabilities in your code.
 
-This action can currently scan JVM bytecode artifacts produced from Java source code.
+This action can currently scan JVM bytecode artifacts produced from Java source code. Note that it targets
+JVM bytecode and NOT Java source code.  The scanner is designed to be run on your deployable artifact.
 
 ## Requirements
 
 You will need the following items to use Contrast Scan:
 
-* A valid account with Contrast's Security Platform.
-  * service account
-  * service key
-  * api key
-  * organizationId
+* Credentials for the Contrast's Security Platform.
+  * Username
+  * Service Key
+  * Api Key
+  * Organization ID
   
 ## Usage
 
@@ -27,7 +28,7 @@ on:
   # new pull requests
   push:
     branches:
-      - master
+      - main
   pull_request:
       types: [opened, synchronize, reopened]
 name: Common Workflow
@@ -49,33 +50,33 @@ jobs:
         artifact: mypath/target/myartifact.jar
         
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CONTRAST__API__USER_NAME: "<user name>"
-        CONTRAST__API__ORGANIZATION_ID: "<your organization ID here>"
+        CONTRAST__API__ORGANIZATION_ID: "<organization id>"
         CONTRAST__API__SERVICE_KEY: ${{ secrets.CONTRAST_SERVICE_KEY }}
         CONTRAST__API__API_KEY: ${{ secrets.CONTRAST_API_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 ```
 
-### Secrets
-**TBD: how does a user obtain these Contrast Platform secrets if needed? **
-
-- `CONTRAST__API__SERVICE_KEY` – **Required** this is the token used to authenticate access to the Contrast Security 
+### Environment Secrets
+- `CONTRAST__API__SERVICE_KEY` – [**Required**] This is the token used to authenticate access to the Contrast Security 
   Platform.
-- `CONTRAST__API__API_KEY` – **Required** this is the token used to authenticate access to the Contrast Security
+- `CONTRAST__API__API_KEY` – [**Required**] This is the token used to authenticate access to the Contrast Security
   Platform. 
-- *`GITHUB_TOKEN` – Provided by Github (see [Authenticating with the GITHUB_TOKEN](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token)).*
+- `GITHUB_TOKEN` – *Provided by Github (see [Authenticating with the GITHUB_TOKEN](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token)).*
 
-## Example of analysis from a pull request
+## Don't use this GitHub action if you are in the following situations
 
-**TBD: insert picture of PR with annotations and labeling here** 
-
-## Do not use this GitHub action if you are in the following situations
-
-* Your code is built with Maven: run 'org.contrastsecurity.maven:scan' during the build (see [Contrast Maven Plugin](https://github.com/Contrast-Security-OSS/contrast-maven-plugin))
+* You are already using the Contrast Scan Maven plug-in. That is, you are using maven to build AND you run
+  'org.contrastsecurity.maven:scan' during the build
+  (see [Contrast Maven Plugin](https://github.com/Contrast-Security-OSS/contrast-maven-plugin)). The Github action and
+  that build plugin accomplish the same thing and can't be used at the same time.
 
 ## Initial On-boarding of using the action.
 
-These instructions assume you already have setup a github workflow to build your project.  If not, see this first... **TBD**
+These instructions assume you already have setup a github workflow to build your project.  If not, read the
+[GitHub Actions](https://docs.github.com/en/actions) documentation to learn what GitHub Actions are and how to set them
+up. After understanding what a GitHub action is, then come back here to complete the following steps:
 
 1. Create a branch of your code to add the scanning action to your workflow. This is typically located at
    `./github/workflows/build.yml`
@@ -98,11 +99,6 @@ These instructions assume you already have setup a github workflow to build your
    the current vulnerabilities the code base has on its main branch. After this occurs, now all new PRs that are created
    where the contrastscan-action is run will fail the code scanning check if they introduce new vulnerabilities beyond
    the baseline we just established.
-
-## Have question or feedback?
-
-**TBD: provide contact info...  route through a developer oriented resource area. or perhaps directly with in github on
-this project**
 
 
 
