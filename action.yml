@@ -4,40 +4,32 @@ inputs:
   apiKey:
     description: 'An agent API key provided by Contrast (required).'
     required: true
+  authHeader:
+    description: 'User authorization credentials provided by Contrast (required).'
+    required: true
   orgId:
     description: 'The ID of your organization in Contrast (required).'
     required: true
   apiUrl:
-    description: 'The name of the host and, optionally, the port expressed as <host>:<port>. Does not include the protocol section of the URL (https://). Defaults to ce.contrastsecurity.com. (optional)'
+    description: 'The name of the host. Includes the protocol section of the URL (https://). Defaults to https://ce.contrastsecurity.com. (optional)'
     required: false
-    default: "ce.contrastsecurity.com"
-  authHeader:
-    description: 'User authorization credentials provided by Contrast (required).'
-    required: true
-  projectName:
-    description: 'The name of the project you want to scan in Contrast (required).'
-    required: true
+    default: "https://ce.contrastsecurity.com"
   artifact:
     description: 'The Artifact to Scan on the Contrast Platform.'
     required: true
+  projectName:
+    description: 'The name of the project you want to scan in Contrast.'
+    required: false
+  projectId:
+    description: 'The ID of your project in Contrast.'
+    required: false
   language:
-    description: 'The language of the project you want to scan (required).'
+    description: 'The language of the project you want to scan. Contrast Scan will automatically try to assign a language in the absence of this field.'
     required: false
   timeout:
     description: 'Set a specific time span (in seconds) before the function times out. The default timeout is 5 minutes if timeout is not set.'
     required: false
-  sarif:
-    description: 'The path in which to save the SARIF results.'
-    required: false
-    default: "results.json"
-  waitForScan:
-    description: 'Wait for the scan to complete before continuing'
-    required: false
-    default: 'true'
-  saveScanResults:
-    description: 'After the scan has completed successfully, store the scan results in SARIF format to disk.'
-    required: false
-    default: 'true'
+    default: 300
 runs:
   using: 'docker'
   image: 'Dockerfile'

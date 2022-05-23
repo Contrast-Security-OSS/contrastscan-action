@@ -1,10 +1,11 @@
 # Container image that runs your code
-FROM node:alpine
+FROM ubuntu:latest
 
-RUN npm install -g @contrast/contrast-cli && npm install -g node-jq
+RUN apt-get update && apt-get install -y wget  \
+    && wget https://pkg.contrastsecurity.com/artifactory/cli/1.0.1/linux/contrast \
+    && chmod +x contrast && mv contrast /usr/bin
 
-# Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh
 
-# Code file to execute when the docker container starts up (`entrypoint.sh`)
 ENTRYPOINT ["/entrypoint.sh"]
+
