@@ -14,3 +14,10 @@ echo "Timeout: $INPUT_TIMEOUT"
  ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_INPUT_PROJECTID"}  \
  ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"} --timeout "${INPUT_TIMEOUT}" \
  -s sarif
+
+ CONTRAST_RET_VAL=$?
+ if [ $CONTRAST_RET_VAL -ne 0 ]; then
+     echo "An error occurred while executing the Scan. Please contact support."
+ fi
+
+ exit $CONTRAST_RET_VAL
