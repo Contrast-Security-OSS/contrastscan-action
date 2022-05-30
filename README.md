@@ -66,7 +66,12 @@ jobs:
           apiKey: ${{ secrets.CONTRAST_API_KEY }}
           orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
           authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-
+    
+    #Upload the results to Github      
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: results.sarif
 ```
 
 In order for GitHub to list vulnerabilities in the UI the contrast action must be accompanied by this github action.
