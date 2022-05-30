@@ -23,9 +23,6 @@ inputs:
   projectId:
     description: 'The ID of your project in Contrast.'
     required: false
-  language:
-    description: 'The language of the project you want to scan. Contrast Scan will automatically try to assign a language in the absence of this field.'
-    required: false
   timeout:
     description: 'Set a specific time span (in seconds) before the function times out. The default timeout is 5 minutes if timeout is not set.'
     required: false

@@ -1,20 +1,35 @@
 # Use Contrast Scan to analyze your code
 
-This github action will enable you to use Contrast Scan to detect vulnerabilities in your code.
+This GitHub action lets you use Contrast Scan to detect vulnerabilities in your code. It scans JVM bytecode artifacts produced from Java source code. 
 
-This action can currently scan JVM bytecode artifacts produced from Java source code. Note that it targets
-JVM bytecode and NOT Java source code.  The scanner is designed to be run on your deployable artifact.
+Contrast Scan is designed to run on your deployable artifact.
 
-## Requirements
+- **Supported language:** Java
+- **CodeSec by Contrast users:** Get authentication details by running the CLI command, contrast_auth.
+- **Standard Contrast users:** Get these credentials from the Contrast web interface:
+    - Authorization header
+    - API key
+    - Organization ID
 
-You will need the following items to use Contrast Scan:
+## Required inputs
 
-* Credentials for the Contrast's Security Platform.
-  * Username
-  * Service Key
-  * Api Key
-  * Organization ID
-  
+- apiKey - An API key from the Contrast platform or contrast-cli auth.
+- authHeader - User authorization credentials from Contrast.
+- orgId - The ID of your organization in Contrast.
+- artifact - The artifact to scan on the Contrast platform.
+
+## Optional inputs
+
+- apiUrl - The URL of the host. This input Includes the protocol section of the URL (https://). The default value is [https://ce.contrastsecurity.com](https://ce.contrastsecurity.com/) (Contrast Community Edition).
+- projectName - The name of the scan project in Contrast.
+
+If you don’t specify a project name, Contrast Scan uses the artifact file name for the project name.
+
+- projectId - The ID of your project in Contrast.
+    - If a project ID already exists, Contrast Scan uses that ID instead of one you specify.
+    - If you don’t specify a project ID, Contrast Scan creates a project ID for the specified project name.
+- timeout - Sets a specific time span (in seconds) before the function times out. The default timeout is five minutes.
+
 ## Usage
 
 All Contrast-related account secrets should be configured as github secrets and will be passed to the scanner via
@@ -44,61 +59,56 @@ jobs:
     # ...
       
     # Scan Artifact    
-    - name: Contrast Scan
-      uses: Contrast-Security-OSS/contrastscan-action@v1
-      with:
-        artifact: mypath/target/myartifact.jar
-        
-      env:
-        CONTRAST__API__USER_NAME: "<user name>"
-        CONTRAST__API__ORGANIZATION_ID: "<organization id>"
-        CONTRAST__API__SERVICE_KEY: ${{ secrets.CONTRAST_SERVICE_KEY }}
-        CONTRAST__API__API_KEY: ${{ secrets.CONTRAST_API_KEY }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Contrast Scan Action
+      uses: Contrast-Security-OSS/contrastscan-action@v2
+        with:
+          artifact: mypath/target/myartifact.jar
+          apiKey: ${{ secrets.CONTRAST_API_KEY }}
+          orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+          authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
 
 ```
 
-### Environment Secrets
-- `CONTRAST__API__SERVICE_KEY` – [**Required**] This is the token used to authenticate access to the Contrast Security 
-  Platform.
-- `CONTRAST__API__API_KEY` – [**Required**] This is the token used to authenticate access to the Contrast Security
-  Platform. 
-- `GITHUB_TOKEN` – *Provided by Github (see [Authenticating with the GITHUB_TOKEN](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token)).*
+In order for GitHub to list vulnerabilities in the UI the contrast action must be accompanied by this github action.
 
-## Don't use this GitHub action if you are in the following situations
+```yaml
 
-* You are already using the Contrast Scan Maven plug-in. That is, you are using maven to build AND you run
-  'org.contrastsecurity.maven:scan' during the build
-  (see [Contrast Maven Plugin](https://github.com/Contrast-Security-OSS/contrast-maven-plugin)). The Github action and
-  that build plugin accomplish the same thing and can't be used at the same time.
+- name: Upload SARIF file
+  uses: github/codeql-action/upload-sarif@v2
+  with:
+    sarif_file: results.sarif
 
-## Initial On-boarding of using the action.
+```
 
-These instructions assume you already have setup a github workflow to build your project.  If not, read the
-[GitHub Actions](https://docs.github.com/en/actions) documentation to learn what GitHub Actions are and how to set them
-up. After understanding what a GitHub action is, then come back here to complete the following steps:
-
-1. Create a branch of your code to add the scanning action to your workflow. This is typically located at
-   `./github/workflows/build.yml`
-2. Add the `contrastscan-action` as described above to your workflow and commit.
-3. After committing, create a Pull Request to merge the update back to your main branch.  If using the parameters in
-   the example workflow above, creating the PR will trigger the Scan to run.  You will see the extra "Code Scanning"
-   check appear in the PR.
-4. Based on Contrast Scan analysis findings, GitHub will control whether a build check will fail or not.  It does
-   this by comparing the code scanning analysis of the PR to the last code scanning analysis of the destination branch.
-   GitHub will fail the check if the code scanning analysis has additional findings that the destination branch does not
-   have. This is intended to prevent new code from introducing vulnerabilities.
-5. On the first run of Contrast Scan, the destination branch will have not had any code scanning analysis performed and
-   thus all vulnerabilities will be discovered as "new", but since there is nothing to compare it to on the destination
-   branch GitHub will not fail the code scanning check.  Since its likely there will be new findings with the addition 
-   of a new security scanning tool, Contrast Scan in this case, we don't want to fail and block merging the PR that
-   adds the scanning tool, forcing the owner of the PR to now fix all the newly exposed vulnerabilities that already
-   existed in the code base.
-6. Once the PR is merged back to the main branch, the contrastscan-action will run on the main branch and a code
-   scanning analysis will be added to GitHub for it.  This will cause the "Security" Tab of the repo to now show all
-   the current vulnerabilities the code base has on its main branch. After this occurs, now all new PRs that are created
-   where the contrastscan-action is run will fail the code scanning check if they introduce new vulnerabilities beyond
-   the baseline we just established.
+The value of `sarif_file` *must* be `results.sarif` which is the name that Contrast Scan Action will write the sarif to.
 
 
+## **If you are using the Contrast Maven plugin**
 
+This GitHub action and the **[Contrast Maven plugin](https://github.com/Contrast-Security-OSS/contrast-maven-plugin)** accomplish the same thing. You cannot use both at the same time.
+
+For example, If you are using maven to build your code and you run org.contrastsecurity.maven:scan during the build, do not use the Contrast Scan GitHub action.
+
+## **Initial steps for using the action**
+
+These instructions assume you already have set up a GitHub workflow to build your project. If not, read the [GitHub Actions](https://docs.github.com/en/actions) documentation to learn what GitHub actions are and how to set them up.
+
+Once you understand what a GitHub action is, complete the following steps:
+
+1. Create a branch of your code to add the Contrast Scan action to your workflow. This branch is typically located at ./github/workflows/build.yml
+2. Add contrastscan-action to your workflow and commit.
+3. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR.
+
+## What this action does
+
+Based on Contrast Scan analysis findings, GitHub controls whether a build check fails.It compares the code scanning analysis of the PR to the last code scan analysis of the destination branch.
+
+GitHub fails the check if the code scanning analysis has additional findings that the destination branch does not have. This behavior is intended to prevent new code from introducing vulnerabilities.
+
+The first time you run Contrast Scan, the destination branch will have not had any code scanning analysis performed. All vulnerabilities found in this first run are discovered as **new**. Since there is nothing to compare it to on the destination branch, GitHub does not fail the code scanning check.
+
+Since it’s likely there will be new findings when you add Contrast Scan, we don't want to fail and block merging the PR that adds the scanning tool, forcing the owner of the PR to now fix all the newly exposed vulnerabilities that already existed in the code base.
+
+Once you merge the PR back to the main branch, the contrastscan-action runs on the main branch and a code scanning analysis is added to GitHub.  This action causes the **Security** Tab of the repo to show all the current vulnerabilities the code base has on its main branch.
+
+After the scan runs on the main branch, all new PRs that you create where the contrastscan-action is run fail the code scanning check if they introduce new vulnerabilities beyond the baseline you just established.

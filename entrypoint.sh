@@ -17,8 +17,7 @@ echo "Timeout: $INPUT_TIMEOUT"
  --organization-id "$INPUT_ORGID" --host "$INPUT_APIURL" \
  ${INPUT_PROJECTNAME:+"--name"} ${INPUT_PROJECTNAME:+"$INPUT_PROJECTNAME"} \
  ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_PROJECTID"}  \
- ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"} --timeout "${INPUT_TIMEOUT}" \
- -s sarif
+ --timeout "${INPUT_TIMEOUT}" -s sarif
 
  CONTRAST_RET_VAL=$?
  if [ $CONTRAST_RET_VAL -ne 0 ]; then
