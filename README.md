@@ -20,7 +20,7 @@ Contrast Scan is designed to run on your deployable artifact.
 
 ## Optional inputs
 
-- apiUrl - The URL of the host. This input Includes the protocol section of the URL (https://). The default value is [https://ce.contrastsecurity.com](https://ce.contrastsecurity.com/) (Contrast Community Edition).
+- apiUrl - The URL of the host. This input includes the protocol section of the URL (https://). The default value is [https://ce.contrastsecurity.com](https://ce.contrastsecurity.com/) (Contrast Community Edition).
 - projectName - The name of the scan project in Contrast.
 
 If you don’t specify a project name, Contrast Scan uses the artifact file name for the project name.
@@ -87,7 +87,7 @@ The value of `sarif_file` *must* be `results.sarif` which is the name that Contr
 
 This GitHub action and the **[Contrast Maven plugin](https://github.com/Contrast-Security-OSS/contrast-maven-plugin)** accomplish the same thing. You cannot use both at the same time.
 
-For example, If you are using maven to build your code and you run org.contrastsecurity.maven:scan during the build, do not use the Contrast Scan GitHub action.
+For example, if you are using maven to build your code and you run org.contrastsecurity.maven:scan during the build, do not use the Contrast Scan GitHub action.
 
 ## **Initial steps for using the action**
 
@@ -101,7 +101,7 @@ Once you understand what a GitHub action is, complete the following steps:
 
 ## What this action does
 
-Based on Contrast Scan analysis findings, GitHub controls whether a build check fails.It compares the code scanning analysis of the PR to the last code scan analysis of the destination branch.
+Based on Contrast Scan analysis findings, GitHub controls whether a build check fails. It compares the code scanning analysis of the PR to the last code scan analysis of the destination branch.
 
 GitHub fails the check if the code scanning analysis has additional findings that the destination branch does not have. This behavior is intended to prevent new code from introducing vulnerabilities.
 
