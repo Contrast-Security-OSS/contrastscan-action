@@ -8,19 +8,15 @@ echo "Artifact: $INPUT_ARTIFACT"
 echo "Language: $INPUT_LANGUAGE"
 echo "Timeout: $INPUT_TIMEOUT"
 
-#[ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
-#[ -z "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present" && exit 1;
-#[ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
-#[ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
-
-if [ -z "$INPUT_ORGID" ] || [ -z "$INPUT_ARTIFACT" ] || [ -z "$INPUT_APIKEY" ] || [ -z "$INPUT_AUTHHEADER" ]; then
-  echo "Inputs: ${INPUT_ORGID:+"\n orgId"}${INPUT_ARTIFACT:+"\n artifact"}${INPUT_APIKEY:+"\n apiKey"}${INPUT_AUTHHEADER:+"\n authHeader"} are required but not present."
-fi
+[ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
+[ -z "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present" && exit 1;
+[ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
+[ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
 /usr/bin/contrast scan --file "$INPUT_ARTIFACT" --api-key "$INPUT_APIKEY" --authorization "$INPUT_AUTHHEADER" \
  --organization-id "$INPUT_ORGID" --host "$INPUT_APIURL" \
  ${INPUT_PROJECTNAME:+"--name"} ${INPUT_PROJECTNAME:+"$INPUT_PROJECTNAME"} \
- ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_INPUT_PROJECTID"}  \
+ ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_PROJECTID"}  \
  ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"} --timeout "${INPUT_TIMEOUT}" \
  -s sarif
 
@@ -28,3 +24,5 @@ fi
  if [ $CONTRAST_RET_VAL -ne 0 ]; then
      echo "An error occurred while executing the Scan. Please contact support."
  fi
+
+exit $CONTRAST_RET_VAL
