@@ -3,7 +3,7 @@
 echo "Org ID: $INPUT_ORGID"
 echo "Project Name: $INPUT_PROJECTNAME"
 echo "Project ID: $INPUT_PROJECTID"
-echo "API URL $INPUT_APIURL"
+echo "API URL: $INPUT_APIURL"
 echo "Artifact: $INPUT_ARTIFACT"
 echo "Language: $INPUT_LANGUAGE"
 echo "Timeout: $INPUT_TIMEOUT"
