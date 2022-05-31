@@ -80,6 +80,9 @@ Once you understand what a GitHub action is, complete the following steps:
 Based on Contrast Scan analysis findings, GitHub controls whether a build check fails. It compares the code scanning analysis of the PR to the last code scan analysis of the destination branch.
 GitHub fails the check if the code scanning analysis has additional findings that the destination branch does not have. This behavior is intended to prevent new code from introducing vulnerabilities.
 The first time you run Contrast Scan, the destination branch will have not had any code scanning analysis performed. All vulnerabilities found in this first run are discovered as **new**. Since there is nothing to compare it to on the destination branch, GitHub does not fail the code scanning check.
+
 Since it’s likely there will be new findings when you add Contrast Scan, we don't want to fail and block merging the PR that adds the scanning tool, forcing the owner of the PR to now fix all the newly exposed vulnerabilities that already existed in the code base.
+
 Once you merge the PR back to the main branch, the contrastscan-action runs on the main branch and a code scanning analysis is added to GitHub.  This action causes the **Security** Tab of the repo to show all the current vulnerabilities the code base has on its main branch.
+
 After the scan runs on the main branch, all new PRs that you create where the contrastscan-action is run fail the code scanning check if they introduce new vulnerabilities beyond the baseline you just established.
