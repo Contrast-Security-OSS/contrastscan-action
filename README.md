@@ -1,7 +1,7 @@
 # Use Contrast Scan to analyze your code
 This GitHub action lets you use Contrast Scan to detect vulnerabilities in your code. It scans JVM bytecode artifacts produced from Java source code.
 Contrast Scan is designed to run on your deployable artifact.
-- **Supported language:** Java
+- **Supported languages:** Java, Javascript and .NET
 - **CodeSec by Contrast users:** Retrieve authentication details using the command line tool - CodeSec by Contrast.
   - Installation instructions here : [https://www.contrastsecurity.com/developer/codesec](https://www.contrastsecurity.com/developer/codesec)
   - Use the 'contrast auth' and 'contrast config' commands to collect the required credentials.
@@ -23,8 +23,8 @@ Contrast Scan is designed to run on your deployable artifact.
   - If you don’t specify a project ID, Contrast Scan creates a project ID for the specified project name.
 - timeout - Sets a specific time span (in seconds) before the function times out. The default timeout is five minutes.
 ## Usage
-All Contrast-related account secrets should be configured as github secrets and will be passed to the scanner via
-environment variables in the github runner.
+All Contrast-related account secrets should be configured as GitHub secrets and will be passed to the scanner via
+environment variables in the GitHub runner.
 A simple workflow to get going is:
 ```yaml
 on:
@@ -53,13 +53,13 @@ jobs:
           apiKey: ${{ secrets.CONTRAST_API_KEY }}
           orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
           authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-    #Upload the results to Github      
+    #Upload the results to GitHub      
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: results.sarif
 ```
-In order for GitHub to list vulnerabilities in the UI the contrast action must be accompanied by this github action.
+In order for GitHub to list vulnerabilities in the UI, the contrast action must be accompanied by this GitHub action.
 ```yaml
 - name: Upload SARIF file
   uses: github/codeql-action/upload-sarif@v2
