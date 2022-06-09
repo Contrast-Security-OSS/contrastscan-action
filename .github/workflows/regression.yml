@@ -6,13 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Tests and Wait
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        uses: convictional/trigger-workflow-and-wait@v1.3.0
         with:
           owner: Contrast-Security-Inc
           repo: contrastscan-action-regression
           github_token: ${{ secrets.SCAN_PAT }}
           ref: master
           workflow_file_name: test-run.yml
+          inputs: '{}'
           wait_interval: 10
           propagate_failure: true
           trigger_workflow: true
