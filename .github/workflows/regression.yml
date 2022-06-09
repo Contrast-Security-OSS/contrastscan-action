@@ -1,4 +1,4 @@
-name: Contrast Scan Action Regression
+name: Regression
 on:
   pull_request:
 jobs:
