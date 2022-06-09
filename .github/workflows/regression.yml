@@ -9,10 +9,10 @@ jobs:
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: Contrast-Security-Inc
-          repo: sast-e2e
+          repo: contrastscan-action-regression
           github_token: ${{ secrets.SCAN_PAT }}
           ref: master
-          workflow_file_name: scantest-test.yml
+          workflow_file_name: test-run.yml
           wait_interval: 10
           propagate_failure: true
           trigger_workflow: true
