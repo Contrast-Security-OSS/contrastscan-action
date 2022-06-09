@@ -1,6 +1,5 @@
 name: Regression
 on:
-  push:
   pull_request:
 jobs:
   trigger_tests:
