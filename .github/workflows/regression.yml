@@ -1,18 +1,19 @@
 name: Regression
 on:
+  push:
   pull_request:
 jobs:
   trigger_tests:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Tests and Wait
-        uses: convictional/trigger-workflow-and-wait@v1.6.3
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: Contrast-Security-Inc
-          repo: contrastscan-action-regression
+          repo: sast-e2e
           github_token: ${{ secrets.SCAN_PAT }}
           ref: master
-          workflow_file_name: test-run.yml
+          workflow_file_name: scantest-test.yml
           wait_interval: 10
           propagate_failure: true
           trigger_workflow: true
