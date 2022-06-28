@@ -5,6 +5,7 @@ echo "Project Name: $INPUT_PROJECTNAME"
 echo "Project ID: $INPUT_PROJECTID"
 echo "API URL: $INPUT_APIURL"
 echo "Artifact: $INPUT_ARTIFACT"
+echo "Language: $INPUT_LANGUAGE"
 echo "Timeout: $INPUT_TIMEOUT"
 
 [ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
@@ -12,10 +13,13 @@ echo "Timeout: $INPUT_TIMEOUT"
 [ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
 [ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
+export CONTRAST_CODSEC_DISABLE_UPDATE_MESSAGE=true
+
 /usr/bin/contrast scan --file "$INPUT_ARTIFACT" --api-key "$INPUT_APIKEY" --authorization "$INPUT_AUTHHEADER" \
  --organization-id "$INPUT_ORGID" --host "$INPUT_APIURL" \
  ${INPUT_PROJECTNAME:+"--name"} ${INPUT_PROJECTNAME:+"$INPUT_PROJECTNAME"} \
  ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_PROJECTID"}  \
+ ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"}  \
  --timeout "${INPUT_TIMEOUT}" -s sarif
 
  CONTRAST_RET_VAL=$?

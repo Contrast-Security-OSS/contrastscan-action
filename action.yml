@@ -23,6 +23,9 @@ inputs:
   projectId:
     description: 'The ID of your project in Contrast.'
     required: false
+  language:
+    description: 'The language of your project.'
+    required: false
   timeout:
     description: 'Set a specific time span (in seconds) before the function times out. The default timeout is 5 minutes if timeout is not set.'
     required: false
