@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../integrations/oss-reloaded/.idea/oss-reloaded.iml" filepath="$PROJECT_DIR$/../integrations/oss-reloaded/.idea/oss-reloaded.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../scan-cli/.idea/scan-cli.iml" filepath="$PROJECT_DIR$/../scan-cli/.idea/scan-cli.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../starter-workflows/.idea/starter-workflows.iml" filepath="$PROJECT_DIR$/../starter-workflows/.idea/starter-workflows.iml" />
+    </modules>
+  </component>
+</project>
