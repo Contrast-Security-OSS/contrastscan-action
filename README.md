@@ -48,11 +48,11 @@ jobs:
     # Scan Artifact    
     - name: Contrast Scan Action
       uses: Contrast-Security-OSS/contrastscan-action@v2
-        with:
-          artifact: mypath/target/myartifact.jar
-          apiKey: ${{ secrets.CONTRAST_API_KEY }}
-          orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
-          authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
+      with:
+        artifact: mypath/target/myartifact.jar
+        apiKey: ${{ secrets.CONTRAST_API_KEY }}
+        orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+        authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
     #Upload the results to GitHub      
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2
