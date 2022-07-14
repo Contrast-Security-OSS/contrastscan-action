@@ -47,7 +47,7 @@ jobs:
     # ...
     # Scan Artifact    
     - name: Contrast Scan Action
-      uses: Contrast-Security-OSS/contrastscan-action@v2
+      uses: Contrast-Security-OSS/contrastscan-action@v2.0.2
         with:
           artifact: mypath/target/myartifact.jar
           apiKey: ${{ secrets.CONTRAST_API_KEY }}
