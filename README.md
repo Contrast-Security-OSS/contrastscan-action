@@ -10,7 +10,7 @@ Contrast Scan is designed to run on your deployable artifact.
   - API key
   - Organization ID
 ## Required inputs
-- apiKey - An API key from the Contrast platform.
+- apiKey - An API key from the Contrast platform. TEST
 - authHeader - User authorization credentials from Contrast.
 - orgId - The ID of your organization in Contrast.
 - artifact - The artifact to scan on the Contrast platform.
