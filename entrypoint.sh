@@ -14,6 +14,7 @@ echo "Timeout: $INPUT_TIMEOUT"
 [ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
 export CONTRAST_CODSEC_DISABLE_UPDATE_MESSAGE=true
+export CODESEC_INVOCATION_ENVIRONMENT="GITHUB"
 
 /usr/bin/contrast scan --file "$INPUT_ARTIFACT" --api-key "$INPUT_APIKEY" --authorization "$INPUT_AUTHHEADER" \
  --organization-id "$INPUT_ORGID" --host "$INPUT_APIURL" \
