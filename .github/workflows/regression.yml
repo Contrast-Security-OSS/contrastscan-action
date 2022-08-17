@@ -9,7 +9,7 @@ jobs:
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: Contrast-Security-Inc
-          repo: contrastscan-action-regression
+          repo: contrast-github-actions-regression
           github_token: ${{ secrets.SCAN_PAT }}
           ref: master
           client_payload: '{"branch_name": "${{ github.event.pull_request.head.ref }}","trigger_repo_url": "${{ github.event.repository.html_url }}","trigger_commit_url": "${{ github.event.head_commit.url }}"}'
