@@ -13,7 +13,7 @@ echo "Timeout: $INPUT_TIMEOUT"
 [ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
 [ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
-export CONTRAST_CODSEC_CI=true
+export CONTRAST_CODESEC_CI=true
 export CODESEC_INVOCATION_ENVIRONMENT="GITHUB"
 
 /usr/bin/contrast scan --file "$INPUT_ARTIFACT" --api-key "$INPUT_APIKEY" --authorization "$INPUT_AUTHHEADER" \
