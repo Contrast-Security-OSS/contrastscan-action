@@ -22,7 +22,7 @@ then
   fi
 fi
 
-if [ "$$INPUT_FAIL" = true ]
+if [ "$INPUT_FAIL" = true ]
 then
   FAIL=true
 fi
