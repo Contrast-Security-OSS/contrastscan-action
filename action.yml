@@ -30,6 +30,12 @@ inputs:
     description: 'Set a specific time span (in seconds) before the function times out. The default timeout is 5 minutes if timeout is not set.'
     required: false
     default: 300
+  severity:
+    description: 'Allows user to report vulnerabilities above a chosen severity level. Values for level are high, medium or low. (Note: Use this input in combination with the fail input, otherwise the action will exit)'
+    required: false
+  fail:
+    description: 'When set to true, fails the action if CVEs have been detected that match at least the severity option specified.'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
