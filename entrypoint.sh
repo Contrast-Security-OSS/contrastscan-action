@@ -39,7 +39,7 @@ export CODESEC_INVOCATION_ENVIRONMENT="GITHUB"
  --timeout "${INPUT_TIMEOUT}" -s sarif
 
  CONTRAST_RET_VAL=$?
- if [ $CONTRAST_RET_VAL -ne 0 ]; then
+ if [ $CONTRAST_RET_VAL -ne 0 ] && [ $CONTRAST_RET_VAL -ne 2 ]; then
      echo "An error occurred while executing the Scan. Please contact support."
  fi
 
