@@ -8,12 +8,14 @@ If you are not familiar with GitHub actions read the
 up. After which, complete the following steps:
 
 1. Configure the following GitHub secrets CONTRAST_API_KEY, CONTRAST_ORGANIZATION_ID, CONTRAST_AUTH_HEADER and CONTRAST_API_URL 
+2
    ![image](https://user-images.githubusercontent.com/24421341/195881793-1ae0c552-8701-4501-a5b9-25863b0c84a5.png)
 
 - **CodeSec by Contrast Security users:** Retrieve authentication details for the secrets using the CLI.
   - Installation instructions here : [https://www.contrastsecurity.com/developer/codesec](https://www.contrastsecurity.com/developer/codesec)
   - If you are a new user, create an account with the 'contrast auth' command
   - Run the 'contrast config' command in the CLI to collect the required credentials
+  
     ![image](https://user-images.githubusercontent.com/24421341/195882697-cd56ea93-01d3-43d4-99e6-9005e7683111.png)
 
 - **Licensed Contrast Security users:** Get your authentication details for the secrets from the 'User Settings' menu in the Contrast web interface: You will need the following 
@@ -21,6 +23,7 @@ up. After which, complete the following steps:
   - Your API key
   - Authorization header
   - You will also need the URL of your Contrast UI host. This input includes the protocol section of the URL (https://).
+  
   ![image](https://user-images.githubusercontent.com/24421341/195883255-b436a666-a040-478a-a9d5-15314097695b.png)
 
 2. Copy sample workflow below and create a branch of your code to add Contrast security Scan. This branch is typically located at `.github/workflows/build.yml`
@@ -31,9 +34,7 @@ up. After which, complete the following steps:
 4. Update the filepath in the workflow file to specfy the location of the built artifact or file to scan
   ![image](https://user-images.githubusercontent.com/24421341/195884756-d83e7c02-bea5-427c-a391-6808e5b489aa.png)
 
-6. Create a branch of your code to add the Contrast Scan action to your workflow. This branch is typically located at ./github/workflows/build.yml
-7. Add contrastscan-action to your workflow and commit.
-8. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR
+5. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR
 
 
 ## Required inputs
