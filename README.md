@@ -1,14 +1,41 @@
 # Use Contrast Scan to analyze your code
-This GitHub action lets you use Contrast Scan to detect vulnerabilities in your code. It scans JVM bytecode artifacts produced from Java source code.
-Contrast Scan is designed to run on your deployable artifact.
+This GitHub action lets you use Contrast Security's industry leading Code scanner Scan to detect vulnerabilities in your code. .
 - **Supported languages:** Java, Javascript and .NET
-- **CodeSec by Contrast users:** Retrieve authentication details using the command line tool - CodeSec by Contrast.
+
+## **Initial steps for using the action**
+If you are not familiar with GitHub actions read the
+[GitHub Actions](https://docs.github.com/en/actions) documentation to learn what GitHub Actions are and how to set them
+up. After which, complete the following steps:
+
+1. Configure the following GitHub secrets CONTRAST_API_KEY, CONTRAST_ORGANIZATION_ID, CONTRAST_AUTH_HEADER and CONTRAST_API_URL 
+   ![image](https://user-images.githubusercontent.com/24421341/195881793-1ae0c552-8701-4501-a5b9-25863b0c84a5.png)
+
+- **CodeSec by Contrast Security users:** Retrieve authentication details for the secrets using the CLI.
   - Installation instructions here : [https://www.contrastsecurity.com/developer/codesec](https://www.contrastsecurity.com/developer/codesec)
-  - Use the 'contrast auth' and 'contrast config' commands to collect the required credentials.
-- **Licensed Contrast users:** Get these credentials from the user area Contrast web interface:
-  - Authorization header
-  - API key
+  - If you are a new user, create an account with the 'contrast auth' command
+  - Run the 'contrast config' command in the CLI to collect the required credentials
+    ![image](https://user-images.githubusercontent.com/24421341/195882697-cd56ea93-01d3-43d4-99e6-9005e7683111.png)
+
+- **Licensed Contrast Security users:** Get your authentication details for the secrets from the 'User Settings' menu in the Contrast web interface: You will need the following 
   - Organization ID
+  - Your API key
+  - Authorization header
+  - You will also need the URL of your Contrast UI host. This input includes the protocol section of the URL (https://).
+  ![image](https://user-images.githubusercontent.com/24421341/195883255-b436a666-a040-478a-a9d5-15314097695b.png)
+
+2. Copy sample workflow below and create a branch of your code to add Contrast security Scan. This branch is typically located at `.github/workflows/build.yml`
+
+3. Update the workflow file to specify when the action should run (for example on pull_request, on push)
+   ![image](https://user-images.githubusercontent.com/24421341/195884528-f5120ff0-bb8e-43e5-978f-5fe3744e186e.png)
+
+4. Update the filepath in the workflow file to specfy the location of the built artifact or file to scan
+  ![image](https://user-images.githubusercontent.com/24421341/195884756-d83e7c02-bea5-427c-a391-6808e5b489aa.png)
+
+6. Create a branch of your code to add the Contrast Scan action to your workflow. This branch is typically located at ./github/workflows/build.yml
+7. Add contrastscan-action to your workflow and commit.
+8. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR
+
+
 ## Required inputs
 - apiKey - An API key from the Contrast platform.
 - authHeader - User authorization credentials from Contrast.
@@ -70,12 +97,7 @@ The value of `sarif_file` *must* be `results.sarif` which is the name that Contr
 ## **If you are using the Contrast Maven plugin**
 This GitHub action and the **[Contrast Maven plugin](https://github.com/Contrast-Security-OSS/contrast-maven-plugin)** accomplish the same thing. You cannot use both at the same time.
 For example, if you are using maven to build your code and you run org.contrastsecurity.maven:scan during the build, do not use the Contrast Scan GitHub action.
-## **Initial steps for using the action**
-These instructions assume you already have set up a GitHub workflow to build your project. If not, read the [GitHub Actions](https://docs.github.com/en/actions) documentation to learn what GitHub actions are and how to set them up.
-Once you understand what a GitHub action is, complete the following steps:
-1. Create a branch of your code to add the Contrast Scan action to your workflow. This branch is typically located at ./github/workflows/build.yml
-2. Add contrastscan-action to your workflow and commit.
-3. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR.
+.
 ## What this action does
 Based on Contrast Scan analysis findings, GitHub controls whether a build check fails. It compares the code scanning analysis of the PR to the last code scan analysis of the destination branch.
 GitHub fails the check if the code scanning analysis has additional findings that the destination branch does not have. This behavior is intended to prevent new code from introducing vulnerabilities.
