@@ -1,5 +1,5 @@
 # Use Contrast Scan to analyze your code
-This GitHub action lets you use Contrast Security's industry leading Code scanner Scan to detect vulnerabilities in your code. .
+This GitHub action lets you use Contrast Security's industry leading Code scanner Scan to detect vulnerabilities in your code.
 - **Supported languages:** Java, Javascript and .NET
 
 ## **Initial steps for using the action**
