@@ -33,13 +33,44 @@ up. After which, complete the following steps:
 
 3. Update the workflow file to specify when the action should run (for example on pull_request, on push)
 
-   ![image](https://user-images.githubusercontent.com/24421341/195884528-f5120ff0-bb8e-43e5-978f-5fe3744e186e.png)
+   ```yaml
+   on:
+     # Trigger analysis when pushing to main or an existing pull requests.  Also trigger on
+     # new pull requests
+     push:
+       branches:
+         - main
+     pull_request:
+         types: [opened, synchronize, reopened]
+   ```
+
 
 4. Update the filepath in the workflow file to specfy the location of the built artifact or file to scan
 
-  ![image](https://user-images.githubusercontent.com/24421341/195884756-d83e7c02-bea5-427c-a391-6808e5b489aa.png)
+  ```yaml
+      with:
+        artifact: mypath/target/myartifact.jar 
+  ```
 
-5. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR
+5. To fail based on severity of vulnerability found set severity (critical/high/medium or low) and fail to true
+
+   ```yaml
+        severity: high
+        fail: true   
+   ```
+
+6. In order for GitHub to list vulnerabilities in the **Security** Tab of the repo, the contrast action must be accompanied by this GitHub action
+
+   ```yaml
+       - name: Upload SARIF file
+         uses: github/codeql-action/upload-sarif@v2
+         with:
+           sarif_file: results.sarif
+   ```
+   
+   The value of `sarif_file` *must* be `results.sarif` which is the name that Contrast Scan Action will write the sarif to.
+   
+7. After committing, create a Pull Request (PR) to merge the update back to your main branch. Creating the PR triggers the scan to run. The extra "Code Scanning" check appears in the PR
 
 Since it’s likely there will be new findings when you add Contrast Scan, we don't want to fail and block merging the PR that adds Contrast Scan, forcing the owner of the PR to now fix all the newly exposed vulnerabilities that already existed in the code base. 
 
@@ -58,9 +89,13 @@ on:
       - main
   pull_request:
       types: [opened, synchronize, reopened]
-name: Common Workflow
+name: Contrast Security Scan
 jobs:
   build_and_scan:
+    permissions:
+        contents: read # for actions/checkout
+        security-events: write # for github/codeql-action/upload-sarif
+        actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     runs-on: ubuntu-latest
     # check out project
     steps:
@@ -70,26 +105,22 @@ jobs:
     # ...
     # Scan Artifact    
     - name: Contrast Scan Action
-      uses: Contrast-Security-OSS/contrastscan-action@v2.0.2
+      uses: Contrast-Security-OSS/contrastscan-action@v2.0.3
       with:
         artifact: mypath/target/myartifact.jar
         apiKey: ${{ secrets.CONTRAST_API_KEY }}
         orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
         authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-    #Upload the results to GitHub      
+        severity: high
+        fail: true
+    # To list vulnerabilities in the GitHub Security Tab of the repo include GitHub upload-sarif action
+    # The value of `sarif_file` must be `results.sarif` 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: results.sarif
 ```
-In order for GitHub to list vulnerabilities in the **Security** Tab of the repo, the contrast action must be accompanied by this GitHub action.
-```yaml
-- name: Upload SARIF file
-  uses: github/codeql-action/upload-sarif@v2
-  with:
-    sarif_file: results.sarif
-```
-The value of `sarif_file` *must* be `results.sarif` which is the name that Contrast Scan Action will write the sarif to.
+
 
 ## Required inputs
 - apiKey - An API key from the Contrast platform.
@@ -98,6 +129,8 @@ The value of `sarif_file` *must* be `results.sarif` which is the name that Contr
 - artifact - The artifact to scan on the Contrast platform.
 ## Optional inputs
 - apiUrl - The URL of the host. This input includes the protocol section of the URL (https://). The default value is [https://ce.contrastsecurity.com](https://ce.contrastsecurity.com/) (Contrast Community Edition).
+- severity - Specify severity of vulnerability. Values for severity are critical, high, medium or low. Fail must also be set to true to fail the check
+- fail - When set to true, fails the check if vulnerabilities have been detected that match at least the severity option specified.
 - projectName - The name of the scan project in Contrast.
   If you don’t specify a project name, Contrast Scan uses the artifact file name for the project name.
 - projectId - The ID of your project in Contrast.
