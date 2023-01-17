@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash -lx
 
 echo "Org ID: $INPUT_ORGID"
 echo "Project Name: $INPUT_PROJECTNAME"
