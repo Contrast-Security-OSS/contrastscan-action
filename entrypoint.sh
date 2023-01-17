@@ -8,8 +8,12 @@ echo "Artifact: $INPUT_ARTIFACT"
 echo "Language: $INPUT_LANGUAGE"
 echo "Timeout: $INPUT_TIMEOUT"
 
+pwd
+ls -la .
+ls -la "$INPUT_ARTIFACT"
+
 [ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
-[ -z "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present" && exit 1;
+[ -f "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present/found" && exit 1;
 [ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
 [ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
