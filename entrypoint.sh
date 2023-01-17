@@ -8,14 +8,14 @@ echo "Artifact: $INPUT_ARTIFACT"
 echo "Language: $INPUT_LANGUAGE"
 echo "Timeout: $INPUT_TIMEOUT"
 
+[ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
+[ -z "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present/found" && exit 1;
+[ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
+[ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
+
 pwd
 ls -la .
 ls -la "$INPUT_ARTIFACT"
-
-[ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
-[ -f "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present/found" && exit 1;
-[ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
-[ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
 if [ -n "$INPUT_SEVERITY" ]
 then
@@ -40,7 +40,7 @@ export CODESEC_INVOCATION_ENVIRONMENT="GITHUB"
  ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_PROJECTID"}  \
  ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"}  \
  ${FAIL:+"--fail"} ${INPUT_SEVERITY:+"--severity"} ${INPUT_SEVERITY:+"$INPUT_SEVERITY"}  \
- --timeout "${INPUT_TIMEOUT}" -s sarif
+ --timeout "${INPUT_TIMEOUT}" -s sarif 1>&1 2>&1
 
  CONTRAST_RET_VAL=$?
  if [ $CONTRAST_RET_VAL -ne 0 ] && [ $CONTRAST_RET_VAL -ne 2 ]; then
