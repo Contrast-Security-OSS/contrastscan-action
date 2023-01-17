@@ -13,6 +13,7 @@ echo "Timeout: $INPUT_TIMEOUT"
 [ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
 [ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
 
+env
 pwd
 ls -la .
 ls -la "$INPUT_ARTIFACT"
