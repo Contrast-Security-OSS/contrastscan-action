@@ -41,13 +41,11 @@ export CODESEC_INVOCATION_ENVIRONMENT="GITHUB"
  ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_PROJECTID"}  \
  ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"}  \
  ${FAIL:+"--fail"} ${INPUT_SEVERITY:+"--severity"} ${INPUT_SEVERITY:+"$INPUT_SEVERITY"}  \
- --timeout "${INPUT_TIMEOUT}" -s sarif --verbose --debug 1>&1 2>&1 | tee /tmp/out
+ --timeout "${INPUT_TIMEOUT}" -s sarif --verbose --debug 1>&1 2>&1
 
  CONTRAST_RET_VAL=$?
  if [ $CONTRAST_RET_VAL -ne 0 ] && [ $CONTRAST_RET_VAL -ne 2 ]; then
      echo "An error occurred while executing the Scan. Please contact support."
  fi
-
-cat /tmp/out
 
 exit $CONTRAST_RET_VAL
