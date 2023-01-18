@@ -36,6 +36,9 @@ inputs:
   fail:
     description: 'When set to true, fails the action if CVEs have been detected that match at least the severity option specified.'
     required: false
+  debug:
+    description: 'When set to true, enables verbose/debug output.'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'

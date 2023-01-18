@@ -1,4 +1,4 @@
-#!/bin/bash -lx
+#!/bin/bash -l
 
 echo "Org ID: $INPUT_ORGID"
 echo "Project Name: $INPUT_PROJECTNAME"
@@ -7,16 +7,12 @@ echo "API URL: $INPUT_APIURL"
 echo "Artifact: $INPUT_ARTIFACT"
 echo "Language: $INPUT_LANGUAGE"
 echo "Timeout: $INPUT_TIMEOUT"
+echo "Debug: $INPUT_DEBUG"
 
 [ -z "$INPUT_ORGID" ] && echo "Organization ID is required but not present" && exit 1;
-[ -z "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present/found" && exit 1;
+[ ! -f "$INPUT_ARTIFACT" ] && echo "Artifact is required but not present/found" && exit 1;
 [ -z "$INPUT_APIKEY" ] && echo "Contrast API Key is required but not present" && exit 1;
 [ -z "$INPUT_AUTHHEADER" ] && echo "Contrast Authorization Header is required but not present" && exit 1;
-
-env
-pwd
-ls -la .
-ls -la "$INPUT_ARTIFACT"
 
 if [ -n "$INPUT_SEVERITY" ]
 then
@@ -41,7 +37,8 @@ export CODESEC_INVOCATION_ENVIRONMENT="GITHUB"
  ${INPUT_PROJECTID:+"--project-id"} ${INPUT_PROJECTID:+"$INPUT_PROJECTID"}  \
  ${INPUT_LANGUAGE:+"--language"} ${INPUT_LANGUAGE:+"$INPUT_LANGUAGE"}  \
  ${FAIL:+"--fail"} ${INPUT_SEVERITY:+"--severity"} ${INPUT_SEVERITY:+"$INPUT_SEVERITY"}  \
- --timeout "${INPUT_TIMEOUT}" -s sarif --verbose --debug 1>&1 2>&1
+ ${INPUT_DEBUG:+--verbose --debug} \
+ --timeout "${INPUT_TIMEOUT}" -s sarif 1>&1 2>&1
 
  CONTRAST_RET_VAL=$?
  if [ $CONTRAST_RET_VAL -ne 0 ] && [ $CONTRAST_RET_VAL -ne 2 ]; then
