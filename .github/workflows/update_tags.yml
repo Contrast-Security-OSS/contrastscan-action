@@ -1,0 +1,15 @@
+name: Keep the versions up-to-date
+
+on:
+  release:
+    types: [published, edited]
+
+permissions:
+  contents: write
+jobs:
+  actions-tagger:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: Actions-R-Us/actions-tagger@330ddfac760021349fef7ff62b372f2f691c20fb
+        with:
+          publish_latest_tag: false
