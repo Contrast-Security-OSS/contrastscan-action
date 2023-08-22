@@ -10,13 +10,13 @@ inputs:
   orgId:
     description: 'The ID of your organization in Contrast (required).'
     required: true
+  artifact:
+    description: 'The Artifact to Scan on the Contrast Platform.'
+    required: true
   apiUrl:
     description: 'The name of the host. Includes the protocol section of the URL (https://). Defaults to https://ce.contrastsecurity.com. (optional)'
     required: false
     default: "https://ce.contrastsecurity.com"
-  artifact:
-    description: 'The Artifact to Scan on the Contrast Platform.'
-    required: true
   projectName:
     description: 'The name of the project you want to scan in Contrast.'
     required: false
@@ -36,6 +36,72 @@ inputs:
   fail:
     description: 'When set to true, fails the action if CVEs have been detected that match at least the severity option specified.'
     required: false
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "composite"
+  steps:
+    - name: Get Latest CLI
+      run: |
+        echo "Downloading Contrast CLI 2.1.0"
+        curl --location 'https://pkg.contrastsecurity.com/artifactory/cli/v2/2.1.0/linux/contrast' --output contrast
+      shell: bash
+    - run: chmod +x contrast
+      shell: bash
+
+    - name: Get CLI Required Arguments
+      id: required-args
+      shell: bash
+      run: |
+        echo "Setting Required Args..."
+        args=()
+        args+=("--api-key ${{ inputs.apiKey }}")
+        args+=("--authorization ${{ inputs.authHeader }}")
+        args+=("--organization-id ${{ inputs.orgId }}")
+        args+=("--file ${{ inputs.artifact }}")
+        args+=("--host ${{ inputs.apiUrl }}")
+
+        echo "args=${args[@]}" >> $GITHUB_OUTPUT
+
+    - name: Get CLI Optional Arguments
+      id: optional-args
+      shell: bash
+      run: |
+        echo "Setting Optional Args..."
+        args=()      
+        if [ -n "${{ inputs.projectName }}" ]; then
+          args+=("--name")
+          args+=("${{ inputs.projectName }}")
+        fi
+        if [ -n "${{ inputs.projectId }}" ]; then
+          args+=("--project-id")
+          args+=("${{ inputs.projectId }}")
+        fi
+        if [ -n "${{ inputs.language }}" ]; then
+          args+=("--language")
+          args+=("${{ inputs.language }}")
+        fi
+        if [ -n "${{ inputs.timeout }}" ]; then
+          args+=("--timeout")
+          args+=("${{ inputs.timeout }}")
+        fi
+        if [ -n "${{inputs.severity}}" ]; then
+          args+=("--severity")
+          args+=("${{ inputs.severity }}")
+        fi
+        if [ -n "${{inputs.severity}}" ]; then
+          args+=("--severity")
+          args+=("${{ inputs.severity }}")
+        fi
+        if [ "${{inputs.fail}}" = true ]; then
+          args+=("--fail")
+        fi
+
+        echo "args=${args[@]}" >> $GITHUB_OUTPUT
+
+    - name: Run Contrast Scan CLI Command
+      continue-on-error: true
+      id: run-scan
+      shell: bash
+      run: |
+        echo "Running the Contrast Scan Command..."
+        ./contrast scan ${{ steps.required-args.outputs.args }} ${{ steps.optional-args.outputs.args }}
