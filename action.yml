@@ -88,10 +88,6 @@ runs:
           args+=("--severity")
           args+=("${{ inputs.severity }}")
         fi
-        if [ -n "${{inputs.severity}}" ]; then
-          args+=("--severity")
-          args+=("${{ inputs.severity }}")
-        fi
         if [ "${{inputs.fail}}" = true ]; then
           args+=("--fail")
         fi
