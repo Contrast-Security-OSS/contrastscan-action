@@ -42,8 +42,8 @@ runs:
   steps:
     - name: Get Latest CLI
       run: |
-        echo "Downloading Contrast CLI 2.1.0"
-        curl --location 'https://pkg.contrastsecurity.com/artifactory/cli/v2/2.1.0/linux/contrast' --output contrast
+        echo "Downloading Contrast CLI 2.1.5"
+        curl --location 'https://pkg.contrastsecurity.com/artifactory/cli/v2/2.1.5/linux/contrast' --output contrast
       shell: bash
     - run: chmod +x contrast
       shell: bash
