@@ -95,7 +95,6 @@ runs:
         echo "args=${args[@]}" >> $GITHUB_OUTPUT
 
     - name: Run Contrast Scan CLI Command
-      continue-on-error: true
       id: run-scan
       shell: bash
       run: |
