@@ -27,9 +27,9 @@ inputs:
     description: 'The language of your project.'
     required: false
   timeout:
-    description: 'Set a specific time span (in seconds) before the function times out. The default timeout is 5 minutes if timeout is not set.'
+    description: 'Set a specific time span (in seconds) before the function times out. The default timeout is 10 minutes if timeout is not set.'
     required: false
-    default: 300
+    default: 600
   severity:
     description: 'Allows user to report vulnerabilities above a chosen severity level. Values for level are high, medium or low. (Note: Use this input in combination with the fail input, otherwise the action will exit)'
     required: false
@@ -95,7 +95,6 @@ runs:
         echo "args=${args[@]}" >> $GITHUB_OUTPUT
 
     - name: Run Contrast Scan CLI Command
-      continue-on-error: true
       id: run-scan
       shell: bash
       run: |
